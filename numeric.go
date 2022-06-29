@@ -13,3 +13,8 @@ func GetValuePrecision(val float64) int {
 	}
 	return len(strs[1])
 }
+
+// FloatToString - convert float to string
+func FloatToString(val float64) string {
+	return strconv.FormatFloat(val, 'f', 8, 64)
+}
