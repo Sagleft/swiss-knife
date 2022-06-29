@@ -3,6 +3,7 @@ package swissknife
 import (
 	"errors"
 	"io/ioutil"
+	"os"
 )
 
 // ReadFileToString read file to string
@@ -21,4 +22,18 @@ func ReadFile(filepath string) ([]byte, error) {
 		return nil, errors.New("failed to read file: " + err.Error())
 	}
 	return fileBytes, err
+}
+
+// SaveStringToFile save arbitrary string to file
+func SaveStringToFile(filepath string, content string) error {
+	file, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	_, err = file.WriteString(content)
+	if err != nil {
+		return err
+	}
+	return nil
 }
