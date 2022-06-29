@@ -8,3 +8,10 @@ func Ternary(statement bool, a, b interface{}) interface{} {
 	}
 	return b
 }
+
+// RunInBackground - blocking method with no exit
+func RunInBackground() {
+	forever := make(chan bool)
+	// background work
+	<-forever
+}
