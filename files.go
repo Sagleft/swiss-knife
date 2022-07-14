@@ -1,7 +1,9 @@
 package swissknife
 
 import (
+	"bufio"
 	"errors"
+	"io"
 	"io/ioutil"
 	"os"
 )
@@ -36,4 +38,30 @@ func SaveStringToFile(filepath string, content string) error {
 		return err
 	}
 	return nil
+}
+
+// ReadFileLines - read file to lines
+func ReadFileLines(filePath string) ([]string, error) {
+	lines := []string{}
+
+	f, err := os.OpenFile(filePath, os.O_RDONLY, os.ModePerm)
+	if err != nil {
+		return nil, errors.New("open file error: " + err.Error())
+	}
+	defer f.Close()
+
+	rd := bufio.NewReader(f)
+	for {
+		line, err := rd.ReadString('\n')
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+
+			return nil, errors.New("read file line error: " + err.Error())
+		}
+
+		lines = append(lines, line)
+	}
+	return lines, nil
 }
