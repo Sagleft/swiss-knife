@@ -26,10 +26,11 @@ func (w *ChannelWorker) AddEvent(event interface{}) {
 	w.Events <- event
 }
 
-// start handle events
+// Start handle events
+// NOTE: it's blocking method
 func (w *ChannelWorker) Start() {
 	w.ProcessingEvents = true
-	w.HandleEvents()
+	w.handleEvents()
 }
 
 func (w *ChannelWorker) Stop() {
@@ -40,7 +41,7 @@ func (w *ChannelWorker) GetMessagesAvailableCount() int {
 	return len(w.Events)
 }
 
-func (w *ChannelWorker) HandleEvents() {
+func (w *ChannelWorker) handleEvents() {
 	w.IsFinished = false
 	for w.ProcessingEvents {
 		for event := range w.Events {
