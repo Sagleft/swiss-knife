@@ -34,3 +34,9 @@ func GetRandomString(length int) string {
 
 	return string(b)
 }
+
+// GetRandomInt returns non-negative pseudo-random number in the half-open interval [0,max)
+func GetRandomInt(max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max)
+}
