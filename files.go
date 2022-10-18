@@ -3,18 +3,41 @@ package swissknife
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 )
 
+// IsFileExists - check file exists
+func IsFileExists(filepath string) bool {
+	if _, err := os.Stat(filepath); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
+// ReadFileToString read file to bytes
+func ReadFileToBytes(filepath string) ([]byte, error) {
+	if !IsFileExists(filepath) {
+		return nil, fmt.Errorf("file %q not found", filepath)
+	}
+
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, errors.New("failed to read file: " + err.Error())
+	}
+	return data, nil
+}
+
 // ReadFileToString read file to string
 func ReadFileToString(filepath string) (string, error) {
-	file, err := ioutil.ReadFile(filepath)
+	data, err := ReadFileToBytes(filepath)
 	if err != nil {
-		return "", errors.New("failed to read file: " + err.Error())
+		return "", err
 	}
-	return string(file), err
+
+	return string(data), nil
 }
 
 // ReadFile read file to string

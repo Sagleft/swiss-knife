@@ -1,6 +1,7 @@
 package swissknife
 
 import (
+	"encoding/json"
 	"errors"
 	"strconv"
 	"time"
@@ -77,4 +78,17 @@ func Reconnect(task ReconnectTask) {
 		task.LogCallback("wait " + task.WaitingBetweenAttempts.String() + " between attempts...")
 		time.Sleep(task.WaitingBetweenAttempts)
 	}
+}
+
+func ParseStructFromJSON(jsonBytes []byte, destinationPointer interface{}) error {
+	return json.Unmarshal(jsonBytes, destinationPointer)
+}
+
+func ParseStructFromJSONFile(filepath string, destinationPointer interface{}) error {
+	dataBytes, err := ReadFileToBytes(filepath)
+	if err != nil {
+		return err
+	}
+
+	return ParseStructFromJSON(dataBytes, destinationPointer)
 }
