@@ -6,6 +6,8 @@ type ChannelWorker struct {
 	EventHandlerCallback func(event interface{})
 	ProcessingEvents     bool
 	IsFinished           bool
+
+	isAsyncMode bool
 }
 
 func NewChannelWorker(callback func(event interface{}), maxCapacity int) *ChannelWorker {
@@ -14,6 +16,11 @@ func NewChannelWorker(callback func(event interface{}), maxCapacity int) *Channe
 		Events:               make(chan interface{}, maxCapacity),
 		EventHandlerCallback: callback,
 	}
+}
+
+func (w *ChannelWorker) SetAsync(asyncMode bool) *ChannelWorker {
+	w.isAsyncMode = asyncMode
+	return w
 }
 
 func (w *ChannelWorker) AddEvent(event interface{}) {
@@ -49,7 +56,11 @@ func (w *ChannelWorker) handleEvents() {
 				break
 			}
 
-			go w.EventHandlerCallback(event)
+			if w.isAsyncMode {
+				go w.EventHandlerCallback(event)
+			} else {
+				w.EventHandlerCallback(event)
+			}
 		}
 	}
 	w.ProcessingEvents = false
