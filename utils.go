@@ -1,6 +1,8 @@
 package swissknife
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"strconv"
@@ -91,4 +93,10 @@ func ParseStructFromJSONFile(filepath string, destinationPointer interface{}) er
 	}
 
 	return ParseStructFromJSON(dataBytes, destinationPointer)
+}
+
+// MD5 - calc MD5 checksum
+func MD5(val []byte) string {
+	hash := md5.Sum(val)
+	return hex.EncodeToString(hash[:])
 }
