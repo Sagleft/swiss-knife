@@ -9,6 +9,7 @@ import (
 	"time"
 
 	simplecron "github.com/sagleft/simple-cron"
+	"gopkg.in/yaml.v3"
 )
 
 // Ternary operator. conditional operator
@@ -86,6 +87,10 @@ func ParseStructFromJSON(jsonBytes []byte, destinationPointer interface{}) error
 	return json.Unmarshal(jsonBytes, destinationPointer)
 }
 
+func ParseStructFromYaml(jsonBytes []byte, destinationPointer interface{}) error {
+	return yaml.Unmarshal(jsonBytes, destinationPointer)
+}
+
 func ParseStructFromJSONFile(filepath string, destinationPointer interface{}) error {
 	dataBytes, err := ReadFileToBytes(filepath)
 	if err != nil {
@@ -93,6 +98,15 @@ func ParseStructFromJSONFile(filepath string, destinationPointer interface{}) er
 	}
 
 	return ParseStructFromJSON(dataBytes, destinationPointer)
+}
+
+func ParseStructFromYamlFile(filepath string, destinationPointer interface{}) error {
+	dataBytes, err := ReadFileToBytes(filepath)
+	if err != nil {
+		return err
+	}
+
+	return ParseStructFromYaml(dataBytes, destinationPointer)
 }
 
 // MD5 - calc MD5 checksum
