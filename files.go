@@ -7,6 +7,8 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+
+	"github.com/kelseyhightower/envconfig"
 )
 
 // IsFileExists - check file exists
@@ -87,4 +89,11 @@ func ReadFileLines(filePath string) ([]string, error) {
 		lines = append(lines, line)
 	}
 	return lines, nil
+}
+
+func ParseConfigFromEnv(cfgPointer any) error {
+	if err := envconfig.Process("", cfgPointer); err != nil {
+		return fmt.Errorf("process env: %w", err)
+	}
+	return nil
 }
