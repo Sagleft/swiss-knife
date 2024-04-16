@@ -5,7 +5,11 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"log"
+	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 
 	simplecron "github.com/sagleft/simple-cron"
@@ -26,6 +30,13 @@ func RunInBackground() {
 	forever := make(chan bool)
 	// background work
 	<-forever
+}
+
+func WaitForAppFinish() {
+	exit := make(chan os.Signal, 1)
+	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
+	<-exit
+	log.Println()
 }
 
 // ConnFunc - some func
