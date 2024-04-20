@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"log"
+	"fmt"
 	"os"
 	"os/signal"
 	"strconv"
@@ -36,7 +36,7 @@ func WaitForAppFinish() {
 	exit := make(chan os.Signal, 1)
 	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
 	<-exit
-	log.Println()
+	fmt.Println()
 }
 
 // ConnFunc - some func
