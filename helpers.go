@@ -1,7 +1,9 @@
 package swissknife
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/common-nighthawk/go-figure"
 	"github.com/fatih/color"
@@ -23,4 +25,13 @@ func PrintIntroMessage(appName, cryptoAddress string, cryptoCoinTag ...string) {
 	fmt.Println(introMessage)
 	color.Green(cryptoAddress + " " + coinTag)
 	fmt.Println()
+}
+
+func PrintObject(o any) {
+	data, err := json.MarshalIndent(o, "", "	")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	fmt.Println(string(data))
 }
